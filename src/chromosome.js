@@ -25,6 +25,7 @@
     this.model = [];
     this.maxBasePair = 0;
     this.xscale = d3.scale.linear();
+    this._highlight = [];
   };
 
   Chromosome.prototype.getMaxBasepair = function() {
@@ -126,6 +127,11 @@
 
   };
 
+  Chromosome.prototype.highlight = function(a) { 
+      return cyto_chr.InitGetterSetter.call(this, '_highlight', a);
+  }
+
+
   Chromosome.prototype.newSelector = function(bp_start, bp_stop) {
 
     var self = this;
@@ -154,6 +160,23 @@
     });
 
     this.selectors.push(ve);
+  };
+
+  Chromosome.prototype.newHighlight = function(bp_start, bp_stop, colour) {
+
+    var self = this;
+
+    var ve = cyto_chr.highlight()
+      .x(cyto_chr.margin.left)
+      .y(cyto_chr.margin.top - (this._height / 4))
+      .height(this._height + (this._height / 2))
+      .xscale(this.xscale)
+      .extent([bp_start, bp_stop])
+      .target(this.svgTarget)
+      .colour(colour)
+      .opacity(1)
+      .render();
+
   };
 
   Chromosome.prototype.getSelections = function() {
@@ -382,6 +405,13 @@
       if (self._showAxis) {
         self.renderAxis();
       }
+
+      var highlight = []; 
+      for ( var i=0; i < self._highlight.length; i++) {
+	  var highlight = self._highlight[i];
+
+	  self.newHighlight(highlight['start'], highlight['end'], highlight['colour']);
+	  }
 
       self.rendered = true;
     });

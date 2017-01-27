@@ -9,7 +9,8 @@ var SOURCE_FILES = [
   'src/model-loader.js',
   'src/selector.js',
   'src/utils.js',
-  'src/angular.adapter.js'
+  'src/angular.adapter.js',
+  'src/highlight.js'
 ];
 
 gulp.task('default', ['build-dev', 'release']);
